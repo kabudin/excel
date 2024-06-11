@@ -108,8 +108,8 @@ abstract class PHPExcel
 
     /**
      * 导出
-     * @param string $filename 上传文件键
-     * @param array|\Closure $closure 匿名函数，自定义插入逻辑，建议传递。唯一参数当前解析的记录数组
+     * @param string $filename 导出文件名
+     * @param array|\Closure $closure 导出的数据。。匿名函数时必须返回数组
      * @param array $property 导出字段属性配置
      * @param string $format 导出格式：Xlsx|Xls|Csv 默认 Xlsx
      * @return \Psr\Http\Message\ResponseInterface
@@ -166,7 +166,7 @@ abstract class PHPExcel
             }
         } catch (RuntimeException) {
         }
-        $format = in_array(ucwords($format), ['Xlsx', 'Xls', 'Csv']) ? $format : 'Xlsx';
+        $format = in_array(ucwords($format), ['Xlsx', 'Xls', 'Csv']) ? ucwords($format) : 'Xlsx';
         $writer = IOFactory::createWriter($spread, $format);
         ob_start();
         $writer->save('php://output');
@@ -244,7 +244,7 @@ abstract class PHPExcel
         return $this->response
             ->withHeader('content-description', 'File Transfer')
             ->withHeader('content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            ->withHeader('content-disposition', "attachment; filename={$filename}; filename*=UTF-8''" . rawurlencode($filename))
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->withHeader('content-transfer-encoding', 'binary')
             ->withHeader('pragma', 'public')
             ->withBody(new SwooleStream($content));

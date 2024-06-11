@@ -1,4 +1,4 @@
-# rate-limit
+# bud-excel
 
 > 适配 hyperf 框架的后端Excel导入导出组件，基于 PhpOffice\PhpSpreadsheet 实现
 
