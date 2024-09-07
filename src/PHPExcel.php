@@ -154,7 +154,7 @@ abstract class PHPExcel
                     if (!empty($annotation['dictData']) && $annotation['dictData'][$value]) {
                         $sheet->setCellValue($columnRow, $annotation['dictData'][$value]);
                     } else {
-                        $sheet->setCellValue($columnRow, $value . "\t");
+                        $sheet->setCellValue($columnRow, is_string($value) ? $value : $value . "\t");
                     }
                     empty($annotation['align']) || $sheet->getStyle($columnRow)->getAlignment()->setHorizontal($annotation['align']);
                     empty($annotation['color']) || $sheet->getStyle($columnRow)->getFont()->setColor(new Color(str_replace('#', '', $annotation['color'])));
